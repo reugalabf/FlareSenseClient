@@ -53,6 +53,18 @@ FlareSenseAggregator >> aggregate: bulkCollection do: aBlock [
 	(self aggregate: bulkCollection) do: aBlock
 ]
 
+{ #category : #'api - export' }
+FlareSenseAggregator >> aggregateCSV: bulkCollection [
+
+	^ String streamContents: [ :stream | 
+		  | writer |
+		  writer := NeoCSVWriter on: stream.
+		  writer nextPut: self csvHeader. "#( date rain )"
+		  writer addObjectFields: #( key ).
+		  self configureCSVFieldsOn: writer.
+		  writer nextPutAll: (self aggregate: bulkCollection) ]
+]
+
 { #category : #private }
 FlareSenseAggregator >> applyMappingsTo: row key: key [
 
@@ -87,6 +99,27 @@ FlareSenseAggregator >> averageAggregationBlock [
 					  value.
 					  1 } ].
 	  outReg ]
+]
+
+{ #category : #'api - export' }
+FlareSenseAggregator >> configureCSVFieldsOn: writer [
+
+	mappings keysDo: [ :k | 
+		writer addObjectField: [ :dict | 
+			| obj |
+			obj := dict value at: k asSymbol.
+			obj isArray
+				ifTrue: [ (obj first / obj second) asFloat ]
+				ifFalse: [ obj ] ] ]
+]
+
+{ #category : #'api - export' }
+FlareSenseAggregator >> csvHeader [
+
+	| header |
+	header := OrderedCollection with: 'key'.
+	header addAll: mappings keys.
+	^ header
 ]
 
 { #category : #api }
