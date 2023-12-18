@@ -148,6 +148,38 @@ FlareSenseClientTest >> testHourlyMultiMappingsToCSV [
 ]
 
 { #category : #tests }
+FlareSenseClientTest >> testHourlyMultiMappingsToJSON [
+
+	| col agregator rsp csv array json dicts |
+	rsp := FlareSenseRawClient new transformJSON:
+		       self twoRawEntriesJson readStream.
+
+	col := (NeoJSONReader on: rsp readStream) nextListAs:
+		       FlareSenseDevelopment.
+
+
+	agregator := FlareSenseAggregator new.
+	agregator
+		hourly;
+		addAverageMappingFor: #hum;
+		addSumMappingFor: #tem;
+		addMaxMappingFor: #wind_ws_gust;
+		addMinMappingFor: #temperature_ws.
+
+
+	self should: [ col size = 3 ].
+	self should: [ 
+		col first when printString = '2023-11-28T13:03:38.897+00:00' ].
+
+
+	json := NeoJSONWriter toStringPretty: col.
+	dicts := NeoJSONReader fromString: json.
+	self should: [ dicts size = 3 ].
+	self should: [ 
+		(dicts first at: 'when') = '2023-11-28T13:03:38.897+00:00' ]
+]
+
+{ #category : #tests }
 FlareSenseClientTest >> testOneRawMultiEntryFlareSense [
 
 	| rsp col |
