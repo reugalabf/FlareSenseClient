@@ -36,12 +36,16 @@ FlareSenseAggregator >> addSumMappingFor: aSymbol [
 { #category : #api }
 FlareSenseAggregator >> aggregate: bulkCollection [
 
-	| result key |
+	| result |
 	bulkCollection do: [ :each | 
-		key := keyBlock value: each when .
+		| key |
+		key := keyBlock value: each when.
 		self applyMappingsTo: each key: key ].
+
 	result := SortedCollection sortBlock: [ :a :b | a key < b key ].
-	aggregation associationsDo: [ :each | result add: each ].
+	aggregation associationsDo: [ :each | 
+		each value at: #when put: each key printString.
+		result add: each ].
 
 
 	^ result
@@ -65,11 +69,22 @@ FlareSenseAggregator >> aggregateCSV: bulkCollection [
 		  writer nextPutAll: (self aggregate: bulkCollection) ]
 ]
 
+{ #category : #'api - export' }
+FlareSenseAggregator >> aggregateJSON: bulkCollection [
+
+	^ String streamContents: [ :stream | 
+		  stream nextPutAll:
+			  (NeoJSONWriter toStringPretty: ((self aggregate: bulkCollection)
+					    inject: OrderedCollection new
+					    into: [ :col :each | 
+						    col
+							    add: each value;
+							    yourself ])) ]
+]
+
 { #category : #private }
 FlareSenseAggregator >> applyMappingsTo: row key: key [
 
-	| result |
-	result := Dictionary new.
 	mappings keysAndValuesDo: [ :k :map | 
 		aggregation
 			at: key
