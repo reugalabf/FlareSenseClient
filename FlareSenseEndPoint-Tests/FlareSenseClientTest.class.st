@@ -150,7 +150,7 @@ FlareSenseClientTest >> testHourlyMultiMappingsToCSV [
 { #category : #tests }
 FlareSenseClientTest >> testHourlyMultiMappingsToJSON [
 
-	| col agregator rsp csv array json dicts |
+	| col agregator rsp json dicts |
 	rsp := FlareSenseRawClient new transformJSON:
 		       self twoRawEntriesJson readStream.
 
@@ -169,10 +169,6 @@ FlareSenseClientTest >> testHourlyMultiMappingsToJSON [
 		        addMaxMappingFor: #wind_ws_gust;
 		        addMinMappingFor: #temperature_ws;
 		        aggregateJSON: col.
-
-
-
-
 
 	dicts := NeoJSONReader fromString: json.
 	self should: [ dicts size = 2 ].

@@ -36,7 +36,7 @@ FlareSenseAggregator >> addSumMappingFor: aSymbol [
 { #category : #api }
 FlareSenseAggregator >> aggregate: bulkCollection [
 
-	| result |
+	"| result |
 	bulkCollection do: [ :each | 
 		| key |
 		key := keyBlock value: each when.
@@ -48,7 +48,9 @@ FlareSenseAggregator >> aggregate: bulkCollection [
 		result add: each ].
 
 
-	^ result
+	^ result"
+
+	^ self aggregateStream: (ReadStream on: bulkCollection)
 ]
 
 { #category : #api }
@@ -80,6 +82,25 @@ FlareSenseAggregator >> aggregateJSON: bulkCollection [
 						    col
 							    add: each value;
 							    yourself ])) ]
+]
+
+{ #category : #api }
+FlareSenseAggregator >> aggregateStream: readStream [
+
+	| result |
+	[readStream atEnd] whileFalse: [ 
+		| each key |
+		each := readStream next.
+		key := keyBlock value: each when.
+		self applyMappingsTo: each key: key ].
+
+	result := SortedCollection sortBlock: [ :a :b | a key < b key ].
+	aggregation associationsDo: [ :each | 
+		each value at: #when put: each key printString.
+		result add: each ].
+
+
+	^ result
 ]
 
 { #category : #private }
