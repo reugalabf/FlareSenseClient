@@ -101,7 +101,7 @@ FlareSenseClientTest >> testHourlyMultiMappings [
 		       FlareSenseDevelopment.
 
 
-	agregator := FlareSenseAggregator new.
+	agregator := DatasetAggregator new.
 	agregator
 		hourly;
 		addAverageMappingFor: #hum;
@@ -126,7 +126,7 @@ FlareSenseClientTest >> testHourlyMultiMappingsToCSV [
 		       FlareSenseDevelopment.
 
 
-	agregator := FlareSenseAggregator new.
+	agregator := DatasetAggregator new.
 	agregator
 		hourly;
 		addAverageMappingFor: #hum;
@@ -161,7 +161,7 @@ FlareSenseClientTest >> testHourlyMultiMappingsToJSON [
 	self should: [ 
 		col first when printString = '2023-11-28T13:03:38.897+00:00' ].
 
-	agregator := FlareSenseAggregator new.
+	agregator := DatasetAggregator new.
 	json := agregator
 		        hourly;
 		        addAverageMappingFor: #hum;
