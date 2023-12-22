@@ -94,7 +94,7 @@ FlareSenseClientTest >> oneRawSingleEntriesJson [
 FlareSenseClientTest >> testHourlyMultiMappings [
 
 	| col agregator rsp |
-	rsp := FlareSenseRawClient new transformJSON:
+	rsp := FlareSenseRawEndpointClient new transformJSONFrom:
 		       self twoRawEntriesJson readStream.
 
 	col := (NeoJSONReader on: rsp readStream) nextListAs:
@@ -103,6 +103,7 @@ FlareSenseClientTest >> testHourlyMultiMappings [
 
 	agregator := DatasetAggregator new.
 	agregator
+		keyAspect: #when;
 		hourly;
 		addAverageMappingFor: #hum;
 		addSumMappingFor: #tem;
@@ -119,7 +120,7 @@ FlareSenseClientTest >> testHourlyMultiMappings [
 FlareSenseClientTest >> testHourlyMultiMappingsToCSV [
 
 	| col agregator rsp csv array |
-	rsp := FlareSenseRawClient new transformJSON:
+	rsp := FlareSenseRawEndpointClient new transformJSONFrom:
 		       self twoRawEntriesJson readStream.
 
 	col := (NeoJSONReader on: rsp readStream) nextListAs:
@@ -128,6 +129,7 @@ FlareSenseClientTest >> testHourlyMultiMappingsToCSV [
 
 	agregator := DatasetAggregator new.
 	agregator
+		keyAspect: #when;
 		hourly;
 		addAverageMappingFor: #hum;
 		addSumMappingFor: #tem;
@@ -151,7 +153,7 @@ FlareSenseClientTest >> testHourlyMultiMappingsToCSV [
 FlareSenseClientTest >> testHourlyMultiMappingsToJSON [
 
 	| col agregator rsp json dicts |
-	rsp := FlareSenseRawClient new transformJSON:
+	rsp := FlareSenseRawEndpointClient new transformJSONFrom:
 		       self twoRawEntriesJson readStream.
 
 	col := (NeoJSONReader on: rsp readStream) nextListAs:
@@ -163,6 +165,7 @@ FlareSenseClientTest >> testHourlyMultiMappingsToJSON [
 
 	agregator := DatasetAggregator new.
 	json := agregator
+		        keyAspect: #when;
 		        hourly;
 		        addAverageMappingFor: #hum;
 		        addSumMappingFor: #tem;
@@ -180,7 +183,7 @@ FlareSenseClientTest >> testHourlyMultiMappingsToJSON [
 FlareSenseClientTest >> testOneRawMultiEntryFlareSense [
 
 	| rsp col |
-	rsp := FlareSenseRawClient new transformJSON:
+	rsp := FlareSenseRawEndpointClient new transformJSONFrom:
 		       self oneRawMultiEntriesJson readStream.
 
 
@@ -197,7 +200,7 @@ FlareSenseClientTest >> testOneRawMultiEntryFlareSense [
 FlareSenseClientTest >> testOneRawMultiEntryFlareSenseObject [
 
 	| rsp col |
-	rsp := FlareSenseRawClient new transformJSON:
+	rsp := FlareSenseRawEndpointClient new transformJSONFrom:
 		       self oneRawMultiEntriesJson readStream.
 
 
@@ -215,7 +218,7 @@ FlareSenseClientTest >> testOneRawMultiEntryFlareSenseObject [
 FlareSenseClientTest >> testOneRawSimpleEntryFlareSenseObject [
 
 	| rsp col |
-	rsp := FlareSenseRawClient new transformJSON:
+	rsp := FlareSenseRawEndpointClient new transformJSONFrom:
 		       self oneRawSingleEntriesJson readStream.
 
 
@@ -231,7 +234,7 @@ FlareSenseClientTest >> testOneRawSimpleEntryFlareSenseObject [
 FlareSenseClientTest >> testTwoRawMultiEntryFlareSenseObject [
 
 	| rsp col |
-	rsp := FlareSenseRawClient new transformJSON:
+	rsp := FlareSenseRawEndpointClient new transformJSONFrom:
 		       self twoRawEntriesJson readStream.
 
 

@@ -9,10 +9,10 @@ Class {
 
 { #category : #'code-critics' }
 ManifestFlareSenseEndPoint class >> ruleToDoRuleV1FalsePositive [
-	^ #(#(#(#RGMethodDefinition #(#FlareSenseRawClient #splitEntry:on: #false)) #'2023-12-11T15:20:00.447688-03:00') )
+	^ #(#(#(#RGMethodDefinition #(#FlareSenseRawEndpointClient #splitEntry:on: #false)) #'2023-12-11T15:20:00.447688-03:00') )
 ]
 
 { #category : #'code-critics' }
 ManifestFlareSenseEndPoint class >> ruleUtilityMethodsRuleV1FalsePositive [
-	^ #(#(#(#RGMethodDefinition #(#FlareSenseRawClient #splitEntry:on: #false)) #'2023-12-11T15:19:56.778373-03:00') )
+	^ #(#(#(#RGMethodDefinition #(#FlareSenseRawEndpointClient #splitEntry:on: #false)) #'2023-12-11T15:19:56.778373-03:00') )
 ]
