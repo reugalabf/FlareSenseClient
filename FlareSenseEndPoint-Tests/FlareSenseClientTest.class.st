@@ -91,6 +91,25 @@ FlareSenseClientTest >> oneRawSingleEntriesJson [
 ]
 
 { #category : #tests }
+FlareSenseClientTest >> testFilterOneRawSimpleEntryFlareSenseObject [
+
+	| rsp col client |
+	rsp := (client := FlareSenseRawEndpointClient new)
+		       filterBlock: [ :each | 
+			       (DateAndTime fromString:(each at: 'when')) = (DateAndTime fromString: '2023-11-28T13:03:38.897Z') ];
+		       transformJSONFrom: self oneRawSingleEntriesJson readStream.
+
+
+	col := (NeoJSONReader on: rsp readStream) nextListAs:
+		       FlareSenseDevelopment.
+
+	self should: [ col size = 1 ].
+	self should: [ 
+		col first when 
+		= (DateAndTime fromString: '2023-11-28T13:03:38.897+00:00') ]
+]
+
+{ #category : #tests }
 FlareSenseClientTest >> testOneRawMultiEntryFlareSense [
 
 	| rsp col |
@@ -102,9 +121,9 @@ FlareSenseClientTest >> testOneRawMultiEntryFlareSense [
 		       FlareSenseDevelopment"
 
 	self should: [ col size = 2 ].
-	self should: [ (col first at: #when) = '2023-11-28T13:38:45.393Z' ].
+	self should: [ (col first at: #when) = '2023-11-28T13:08:45.393+00:00' ].
 	self should: [ 
-		(col last at: #when) = '2023-11-28T14:08:45.393+00:00' ]
+		(col last at: #when) = '2023-11-28T13:38:45.393+00:00' ]
 ]
 
 { #category : #tests }
@@ -120,9 +139,9 @@ FlareSenseClientTest >> testOneRawMultiEntryFlareSenseObject [
 
 	self should: [ col size = 2 ].
 	self should: [ 
-		col first when printString = '2023-11-28T13:38:45.393+00:00' ].
+		col first when printString = '2023-11-28T13:08:45.393+00:00' ].
 	self should: [ 
-		col last when printString = '2023-11-28T14:08:45.393+00:00' ]
+		col last when printString = '2023-11-28T13:38:45.393+00:00' ]
 ]
 
 { #category : #tests }
@@ -156,7 +175,7 @@ FlareSenseClientTest >> testTwoRawMultiEntryFlareSenseObject [
 	self should: [ 
 		col first when printString = '2023-11-28T13:03:38.897+00:00' ].
 	self should: [ 
-		col last when printString = '2023-11-28T14:08:45.393+00:00' ]
+		col last when printString = '2023-11-28T14:05:45.393+00:00' ]
 ]
 
 { #category : #private }
@@ -222,7 +241,7 @@ FlareSenseClientTest >> twoRawEntriesJson [
 26.5
 ],
 "timeDeltaM": 30,
-"when": "2023-11-28T13:38:45.393Z",
+"when": "2023-11-28T14:05:45.393Z",
 "wind_direction_ws": [
 0,
 1.2

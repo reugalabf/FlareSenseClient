@@ -2,10 +2,21 @@ Class {
 	#name : #FlareSenseRawSource,
 	#superclass : #Object,
 	#instVars : [
-		'entity'
+		'entity',
+		'filterBlock',
+		'badEntries',
+		'keepBadEntries'
 	],
 	#category : #'FlareSenseEndPoint-Clients'
 }
+
+{ #category : #API }
+FlareSenseRawSource >> checkConsistency: dictEntry [
+
+	"dictEntry needs to have the DeltaTimeM key or the number of values is "
+
+	^ dictEntry includesKey: 'timeDeltaM'
+]
 
 { #category : #actions }
 FlareSenseRawSource >> fetch [
@@ -13,10 +24,43 @@ FlareSenseRawSource >> fetch [
 	^ self fetchAs: entity
 ]
 
+{ #category : #accessing }
+FlareSenseRawSource >> filterBlock: anObject [
+
+	filterBlock := anObject
+]
+
+{ #category : #accessing }
+FlareSenseRawSource >> ignoreBadEntries [
+
+	keepBadEntries := false
+]
+
+{ #category : #initialization }
+FlareSenseRawSource >> initialize [
+
+	filterBlock := [ :dt | true ].
+	badEntries := OrderedCollection new.
+	keepBadEntries := false
+]
+
+{ #category : #API }
+FlareSenseRawSource >> isUsableEntry: dictEntry [
+
+	^ (filterBlock value: dictEntry) and: [ 
+		  self checkConsistency: dictEntry ]
+]
+
+{ #category : #accessing }
+FlareSenseRawSource >> keepBadEntries [
+
+	keepBadEntries := true
+]
+
 { #category : #API }
 FlareSenseRawSource >> splitEntry: dict on: rspCol [
 
-	| count holder |
+	| count holder deltaCount |
 	holder := OrderedCollection new.
 	count := dict inject: 1 into: [ :size :each | 
 		         size max: (each isArray
@@ -30,13 +74,15 @@ FlareSenseRawSource >> splitEntry: dict on: rspCol [
 			ifTrue: [ 
 				1 to: value size do: [ :idx | 
 				(holder at: idx) at: key put: (value at: idx) ] ] ].
+	deltaCount := 0.
+	holder reverseDo: [ :each | 
+		| date |
+		date := (DateAndTime fromString: (each at: #when))
+		        - (Duration minutes: (each at: #timeDeltaM) * deltaCount).
+		each at: #when put: date printString.
+		deltaCount := deltaCount + 1 ].
 
-	2 to: holder size do: [ :idx | 
-		| date entry |
-		date := (DateAndTime fromString:
-			         ((entry := holder at: idx) at: #when))
-		        + (Duration minutes: (entry at: #timeDeltaM) * (idx - 1)).
-		entry at: #when put: date printString ].
+
 	rspCol addAllLast: holder
 ]
 
@@ -56,6 +102,9 @@ FlareSenseRawSource >> transformJSONFrom: readStream on: writeStream [
 	rspCol := OrderedCollection new.
 
 	inputCol := (NeoJSONReader on: readStream) next.
-	inputCol do: [ :dict | self splitEntry: dict on: rspCol ].
+	inputCol do: [ :dict | 
+		(self isUsableEntry: dict)
+			ifTrue: [ self splitEntry: dict on: rspCol ]
+			ifFalse: [ badEntries addLast: dict ] ].
 	writeStream nextPutAll: (NeoJSONWriter toString: rspCol)
 ]
