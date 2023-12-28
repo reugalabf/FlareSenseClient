@@ -105,6 +105,6 @@ FlareSenseRawSource >> transformJSONFrom: readStream on: writeStream [
 	inputCol do: [ :dict | 
 		(self isUsableEntry: dict)
 			ifTrue: [ self splitEntry: dict on: rspCol ]
-			ifFalse: [ badEntries addLast: dict ] ].
+			ifFalse: [ keepBadEntries and: [ badEntries addLast: dict ] ] ].
 	writeStream nextPutAll: (NeoJSONWriter toString: rspCol)
 ]
