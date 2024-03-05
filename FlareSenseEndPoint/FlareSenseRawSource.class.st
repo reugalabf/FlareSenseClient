@@ -5,7 +5,8 @@ Class {
 		'entity',
 		'filterBlock',
 		'badEntries',
-		'keepBadEntries'
+		'keepBadEntries',
+		'fixTimezone'
 	],
 	#category : #'FlareSenseEndPoint-Clients'
 }
@@ -31,6 +32,12 @@ FlareSenseRawSource >> filterBlock: anObject [
 ]
 
 { #category : #accessing }
+FlareSenseRawSource >> fixTimezone: secondsOffset [
+
+	fixTimezone := secondsOffset
+]
+
+{ #category : #accessing }
 FlareSenseRawSource >> ignoreBadEntries [
 
 	keepBadEntries := false
@@ -41,7 +48,8 @@ FlareSenseRawSource >> initialize [
 
 	filterBlock := [ :dt | true ].
 	badEntries := OrderedCollection new.
-	keepBadEntries := false
+	keepBadEntries := false.
+	fixTimezone := 0
 ]
 
 { #category : #API }
@@ -79,7 +87,10 @@ FlareSenseRawSource >> splitEntry: dict on: rspCol [
 		| date |
 		date := (DateAndTime fromString: (each at: #when))
 		        - (Duration minutes: (each at: #timeDeltaM) * deltaCount).
-		each at: #when put: date printString.
+		each at: #when put: (date translateTo: fixTimezone) printString.
+
+
+		date printString.
 		deltaCount := deltaCount + 1 ].
 
 
