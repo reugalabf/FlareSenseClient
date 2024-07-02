@@ -18,7 +18,7 @@ FlareSenseRawFileSource class >> inputFile: filename [
 { #category : #actions }
 FlareSenseRawFileSource >> fetchAs: aClass [
 
-	^ entity
+	^ aClass
 		  ifNil: [ (NeoJSONReader on: inputFile readStream) next ]
 		  ifNotNil: [ 
 			  (NeoJSONReader on: (self transformJSONFrom: inputFile readStream)) 

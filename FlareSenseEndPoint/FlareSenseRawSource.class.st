@@ -2,7 +2,6 @@ Class {
 	#name : #FlareSenseRawSource,
 	#superclass : #Object,
 	#instVars : [
-		'entity',
 		'filterBlock',
 		'badEntries',
 		'keepBadEntries',
@@ -22,7 +21,13 @@ FlareSenseRawSource >> checkConsistency: dictEntry [
 { #category : #actions }
 FlareSenseRawSource >> fetch [
 
-	^ self fetchAs: entity
+	^ self fetchAs: nil
+]
+
+{ #category : #actions }
+FlareSenseRawSource >> fetchAs: aClass [
+
+	^ self subclassResponsibility
 ]
 
 { #category : #accessing }
@@ -103,7 +108,7 @@ FlareSenseRawSource >> transformJSONFrom: readStream [
 	| ws |
 	ws := WriteStream on: String new.
 	self transformJSONFrom: readStream on: ws.
-	^ ws contents
+	^ ReadStream on: ws contents
 ]
 
 { #category : #API }

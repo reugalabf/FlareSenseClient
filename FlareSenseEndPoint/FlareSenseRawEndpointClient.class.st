@@ -47,7 +47,7 @@ FlareSenseRawEndpointClient >> fetchAs: aClass [
 	rsp := ZnEasy get: self buildCallURL.
 	rsp isError ifTrue: [ 
 		^ self error: 'Error fetching from endPoint ' , endPoint ].
-	^ entity
+	^ aClass
 		  ifNil: [ (NeoJSONReader on: rsp entity readStream) next ]
 		  ifNotNil: [ 
 			  (NeoJSONReader on: (self transformJSONFrom: rsp entity readStream)) 
