@@ -179,6 +179,89 @@ FlareSenseClientTest >> testTwoRawMultiEntryFlareSenseObject [
 ]
 
 { #category : #private }
+FlareSenseClientTest >> twoMultiRawEntriesJson [
+^ '[{
+"fw": "Miramar-sep2022",
+"hum": [
+30,
+40,
+80
+],
+"humidity_ws": [
+80,
+70,
+60
+],
+"nodeId": "3c610528e00c",
+"pressure_ws": [
+1012
+],
+"raing": [
+0
+],
+"tem": [
+25.3
+],
+"temperature_ws": [
+25.3
+],
+"timeDeltaM": 30,
+"when": "2023-11-28T13:03:38.897Z",
+"wind_direction_ws": [
+0.6
+],
+"wind_ws_gust": [
+36
+],
+"wind_wspeed_s": [
+17.8
+]
+},
+{
+"fw": "Miramar-sep2022",
+"hum": [
+50,
+80
+],
+"humidity_ws": [
+80,70
+],
+"nodeId": "3c610528e00c",
+"pressure_ws": [
+1011.9,
+1011.7
+],
+"raing": [
+0,
+0
+],
+"tem": [
+28.1,
+26.1
+],
+"temperature_ws": [
+26.8,
+26.5
+],
+"timeDeltaM": 30,
+"when": "2023-11-28T14:05:45.393Z",
+"wind_direction_ws": [
+0,
+1.2
+],
+"wind_ws_gust": [
+11.6,
+28.8
+],
+"wind_wspeed_s": [
+4.4,
+14.4
+]
+}
+]'
+]
+
+{ #category : #private }
 FlareSenseClientTest >> twoRawEntriesJson [
 ^ '[{
 "fw": "Miramar-sep2022",
