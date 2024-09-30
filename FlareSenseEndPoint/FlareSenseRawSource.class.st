@@ -1,3 +1,6 @@
+"
+FlareSense Source adapter
+"
 Class {
 	#name : #FlareSenseRawSource,
 	#superclass : #Object,

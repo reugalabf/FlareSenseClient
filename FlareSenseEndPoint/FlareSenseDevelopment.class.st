@@ -1,3 +1,6 @@
+"
+Basic representation of a Flaresense row
+"
 Class {
 	#name : #FlareSenseDevelopment,
 	#superclass : #Object,

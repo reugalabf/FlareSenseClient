@@ -1,3 +1,6 @@
+"
+Basic FlareSense client
+"
 Class {
 	#name : #FlareSenseClient,
 	#superclass : #Object,
