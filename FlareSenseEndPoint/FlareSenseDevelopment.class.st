@@ -16,7 +16,7 @@ Class {
 		'when',
 		'wind_direction_ws',
 		'wind_ws_gust',
-		'wind_wspeed_s'
+		'wind_speed'
 	],
 	#category : #'FlareSenseEndPoint-Entities'
 }
@@ -27,7 +27,7 @@ FlareSenseDevelopment class >> neoJsonMapping: mapper [
 	mapper for: self do: [ :mapping | 
 		mapping mapInstVars:
 			#( nodeId timeDeltaM hum humidity_ws pressure_ws rain tem temperature_ws
-			   wind_direction_ws wind_ws_gust wind_wspeed_s ).
+			   wind_direction_ws wind_ws_gust #wind_speed ).
 
 		(mapping mapInstVar: #when) valueSchema: DateAndTime ].
 
@@ -158,6 +158,18 @@ FlareSenseDevelopment >> wind_direction_ws: anObject [
 ]
 
 { #category : #accessing }
+FlareSenseDevelopment >> wind_speed [
+
+	^ wind_speed
+]
+
+{ #category : #accessing }
+FlareSenseDevelopment >> wind_speed: anObject [
+
+	wind_speed := anObject
+]
+
+{ #category : #accessing }
 FlareSenseDevelopment >> wind_ws_gust [
 
 	^ wind_ws_gust
@@ -167,16 +179,4 @@ FlareSenseDevelopment >> wind_ws_gust [
 FlareSenseDevelopment >> wind_ws_gust: anObject [
 
 	wind_ws_gust := anObject
-]
-
-{ #category : #accessing }
-FlareSenseDevelopment >> wind_wspeed_s [
-
-	^ wind_wspeed_s
-]
-
-{ #category : #accessing }
-FlareSenseDevelopment >> wind_wspeed_s: anObject [
-
-	wind_wspeed_s := anObject
 ]
