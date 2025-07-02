@@ -16,6 +16,12 @@ FlareSenseRawEndpointClient class >> endPoint: urlString [
 		  yourself
 ]
 
+{ #category : #accessing }
+FlareSenseRawEndpointClient class >> source: urlString [
+
+	^ self endPoint: urlString
+]
+
 { #category : #API }
 FlareSenseRawEndpointClient >> aggregateWith: aggregator [
 

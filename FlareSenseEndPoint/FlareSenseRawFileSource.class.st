@@ -15,6 +15,12 @@ FlareSenseRawFileSource class >> inputFile: filename [
 		  yourself
 ]
 
+{ #category : #accessing }
+FlareSenseRawFileSource class >> source: filename [
+
+	^ self inputFile: filename
+]
+
 { #category : #actions }
 FlareSenseRawFileSource >> fetchAs: aClass [
 

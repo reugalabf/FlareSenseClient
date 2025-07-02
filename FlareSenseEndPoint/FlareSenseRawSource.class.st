@@ -13,6 +13,12 @@ Class {
 	#category : #'FlareSenseEndPoint-Clients'
 }
 
+{ #category : #accessing }
+FlareSenseRawSource class >> source: aString [
+
+	^ self subclassResponsibility
+]
+
 { #category : #API }
 FlareSenseRawSource >> checkConsistency: dictEntry [
 
